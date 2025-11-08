@@ -87,7 +87,7 @@
                             android:backgroundTint="@android:color/transparent"
                             android:paddingHorizontal="24dp"
                             android:strokeColor="@android:color/white"
-                            android:strokeWidth="2dp"
+                            android:strokeWidth="2"
                             android:text="View Dashboard"
                             android:textColor="@android:color/white"
                             android:textSize="16sp"
