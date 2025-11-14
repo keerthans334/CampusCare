@@ -32,6 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.campuscare.app.utils.RegistrationNumberValidator;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -141,8 +142,25 @@ public class SubmitItemActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        selectedImageUri = result.getData().getData();
-                        displaySelectedImage();
+                        Uri imageUri = result.getData().getData();
+                        if (imageUri != null) {
+                            try {
+                                // Take persistable permission to access the URI
+                                getContentResolver().takePersistableUriPermission(imageUri,
+                                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            } catch (SecurityException e) {
+                                Log.w(TAG, "Could not take persistable permission", e);
+                                // Continue anyway, the URI might still work
+                            }
+
+                            selectedImageUri = imageUri;
+                            displaySelectedImage();
+                            Log.d(TAG, "Image selected: " + selectedImageUri.toString());
+                        } else {
+                            Toast.makeText(this, "Failed to get image", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Log.d(TAG, "Image selection cancelled or failed");
                     }
                 }
         );
@@ -250,21 +268,50 @@ public class SubmitItemActivity extends AppCompatActivity {
     }
 
     private void openImagePicker() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        imagePickerLauncher.launch(intent);
+        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        // Add flags to ensure we can access the file
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+
+        try {
+            imagePickerLauncher.launch(intent);
+        } catch (Exception e) {
+            Log.e(TAG, "Error opening image picker", e);
+            Toast.makeText(this, "Unable to open image picker", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void displaySelectedImage() {
         if (selectedImageUri != null) {
-            Glide.with(this)
-                    .load(selectedImageUri)
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_upload)
-                    .into(ivItemImage);
+            try {
+                // Test if we can access the URI
+                InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
+                if (inputStream != null) {
+                    inputStream.close();
 
-            btnSelectImage.setText("Change Image");
-            ivItemImage.setVisibility(View.VISIBLE);
+                    Glide.with(this)
+                            .load(selectedImageUri)
+                            .centerCrop()
+                            .placeholder(R.drawable.ic_upload)
+                            .error(R.drawable.ic_upload) // Show placeholder if loading fails
+                            .into(ivItemImage);
+
+                    btnSelectImage.setText("Change Image");
+                    ivItemImage.setVisibility(View.VISIBLE);
+
+                    Log.d(TAG, "Image displayed successfully");
+                } else {
+                    throw new Exception("Cannot open input stream");
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error displaying image", e);
+                selectedImageUri = null; // Clear the invalid URI
+                Toast.makeText(this, "Cannot display selected image. Please select again.",
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -323,11 +370,25 @@ public class SubmitItemActivity extends AppCompatActivity {
 
         return isValid;
     }    private void uploadImageAndSubmitItem() {
-        String fileName = "lost_items/" + UUID.randomUUID().toString() + ".jpg";
-        StorageReference imageRef = storageRef.child(fileName);
+        if (selectedImageUri == null) {
+            Log.e(TAG, "No image selected");
+            showProgress(false);
+            Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        imageRef.putFile(selectedImageUri)
-                .addOnSuccessListener(taskSnapshot ->
+        try {
+            // Verify the URI is still accessible
+            getContentResolver().openInputStream(selectedImageUri).close();
+
+            String fileName = "lost_items/" + System.currentTimeMillis() + "_" + UUID.randomUUID().toString() + ".jpg";
+            StorageReference imageRef = storageRef.child(fileName);
+
+            Log.d(TAG, "Starting image upload with URI: " + selectedImageUri.toString());
+
+            imageRef.putFile(selectedImageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        Log.d(TAG, "Image upload successful, getting download URL");
                         imageRef.getDownloadUrl()
                                 .addOnSuccessListener(uri -> {
                                     Log.d(TAG, "Image uploaded successfully: " + uri.toString());
@@ -338,14 +399,37 @@ public class SubmitItemActivity extends AppCompatActivity {
                                     showProgress(false);
                                     Toast.makeText(this, "Failed to get image URL: " + e.getMessage(),
                                             Toast.LENGTH_SHORT).show();
-                                })
-                )
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Image upload failed", e);
-                    showProgress(false);
-                    Toast.makeText(this, "Image upload failed: " + e.getMessage(),
-                            Toast.LENGTH_SHORT).show();
-                });
+                                });
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Image upload failed", e);
+                        showProgress(false);
+
+                        // Provide more specific error messages
+                        String errorMessage = "Image upload failed";
+                        if (e.getMessage() != null) {
+                            if (e.getMessage().contains("does not exist")) {
+                                errorMessage = "Image file not accessible. Please select image again.";
+                            } else if (e.getMessage().contains("permission")) {
+                                errorMessage = "Permission denied. Please grant storage permission.";
+                            } else {
+                                errorMessage = "Upload failed: " + e.getMessage();
+                            }
+                        }
+
+                        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+                    })
+                    .addOnProgressListener(snapshot -> {
+                        // Optional: Show upload progress
+                        double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                        Log.d(TAG, "Upload progress: " + progress + "%");
+                    });
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error accessing selected image", e);
+            showProgress(false);
+            Toast.makeText(this, "Cannot access selected image. Please select again.", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void submitItemToFirestore(String imageUrl) {
