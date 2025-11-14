@@ -7,10 +7,15 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
+    <!-- Storage permissions for different Android versions -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Internet permission for Firebase -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -37,6 +42,24 @@
         <!-- Submit Activity -->
         <activity
             android:name=".SubmitActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusCare.NoActionBar" />
+
+        <!-- Submit Item Activity -->
+        <activity
+            android:name=".SubmitItemActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusCare.NoActionBar" />
+
+        <!-- Lost Items Activity -->
+        <activity
+            android:name=".LostItemsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusCare.NoActionBar" />
+
+        <!-- Item Detail Activity -->
+        <activity
+            android:name=".ItemDetailActivity"
             android:exported="false"
             android:theme="@style/Theme.CampusCare.NoActionBar" />
 

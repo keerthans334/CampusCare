@@ -40,4 +40,9 @@
     <string name="invalid_roll_number">Invalid roll number format (e.g., CSE2021001)</string>
     <string name="report_submitted">Report submitted successfully!</string>
     <string name="permission_required">Permission required to select image</string>
+
+    <!-- Lost Items Activity -->
+    <string name="lost_items_title">Lost Items</string>
+    <string name="search_items_hint">Search items...</string>
+    <string name="add_lost_item">Add Lost Item</string>
 </resources>

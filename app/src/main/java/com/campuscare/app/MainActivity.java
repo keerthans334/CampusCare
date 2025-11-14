@@ -2,9 +2,12 @@ package com.campuscare.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,6 +17,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initializeViews();
+        testFirebaseConnection();
+    }
+
+    private void testFirebaseConnection() {
+        try {
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            Log.d("MainActivity", "Firebase initialized successfully");
+            Toast.makeText(this, "Firebase connected successfully!", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e("MainActivity", "Firebase initialization failed", e);
+            Toast.makeText(this, "Firebase connection failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void initializeViews() {
@@ -41,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
         btnLostFound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SubmitActivity.class);
-                intent.putExtra("type", "lost_found");
+                // Direct to SubmitItemActivity for testing
+                Intent intent = new Intent(MainActivity.this, SubmitItemActivity.class);
                 startActivity(intent);
             }
         });

@@ -44,6 +44,15 @@
     <color name="status_pending">#F59E0B</color>
     <color name="status_in_progress">#3B82F6</color>
     <color name="status_resolved">#10B981</color>
+    <color name="status_lost">#DC2626</color>
+    <color name="status_found">#10B981</color>
+    <color name="status_claimed">#059669</color>
+
+    <!-- Status Background Colors -->
+    <color name="status_lost_background">#FEE2E2</color>
+    <color name="status_found_background">#DCFCE7</color>
+    <color name="status_claimed_background">#D1FAE5</color>
+    <color name="background_secondary">#F1F5F9</color>
 
     <!-- Type Colors -->
     <color name="type_lost_found">#2563EB</color>
