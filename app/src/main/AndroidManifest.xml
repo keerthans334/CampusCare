@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -51,6 +53,20 @@
             android:name=".MarkRepairDoneActivity"
             android:exported="false"
             android:theme="@style/Theme.CampusCare.NoActionBar" />
+
+        <!-- Submit Item Activity -->
+        <activity
+            android:name=".SubmitItemActivity"
+            android:exported="false"
+            android:parentActivityName=".DashboardActivity"
+            android:theme="@style/Theme.CampusCare" />
+
+        <!-- Lost Items Activity -->
+        <activity
+            android:name=".LostItemsActivity"
+            android:exported="false"
+            android:parentActivityName=".DashboardActivity"
+            android:theme="@style/Theme.CampusCare" />
 
     </application>
 

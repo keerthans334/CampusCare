@@ -8,7 +8,7 @@
     <color name="md_theme_light_secondary">#DC2626</color>
     <color name="md_theme_light_onSecondary">#FFFFFF</color>
     <color name="md_theme_light_secondaryContainer">#FEE2E2</color>
-    <color name="md_theme_light_onSecondaryContainer">#991B1B</color>
+    <color name="md_theme_light_onSecondaryContainer">#7F1D1D</color>
     <color name="md_theme_light_tertiary">#059669</color>
     <color name="md_theme_light_onTertiary">#FFFFFF</color>
     <color name="md_theme_light_tertiaryContainer">#D1FAE5</color>
@@ -44,8 +44,19 @@
     <color name="status_pending">#F59E0B</color>
     <color name="status_in_progress">#3B82F6</color>
     <color name="status_resolved">#10B981</color>
+    <color name="status_lost">#DC2626</color>
+    <color name="status_lost_background">#FEE2E2</color>
+    <color name="status_found">#059669</color>
+    <color name="status_found_background">#D1FAE5</color>
+    <color name="status_claimed">#7C3AED</color>
+    <color name="status_claimed_background">#EDE9FE</color>
 
-    <!-- Type Colors -->
-    <color name="type_lost_found">#2563EB</color>
-    <color name="type_repair_replace">#DC2626</color>
+    <!-- Text Colors -->
+    <color name="text_primary">#111827</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="background_secondary">#F3F4F6</color>
+
+    <!-- Department Colors -->
+    <color name="department_background">#EBF8FF</color>
+    <color name="department_text">#1E40AF</color>
 </resources>
