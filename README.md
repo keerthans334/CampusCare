@@ -47,7 +47,15 @@ CampusCare is a smart Android application designed to streamline campus facility
 | <img src="assests/main_page.png" alt="Landing" height="400"> | <img src="assests/dashboard.png" alt="Dashboard" height="400"> | <img src="assests/report_fill.png" alt="Report" height="400"> | <img src="assests/mark_complete.png" alt="Technician" height="400"> | <img src="assests/claimimg.png" alt="Claim" height="400"> | <img src="assests/dash_repair_replace.png" alt="Technician" height="400"> |
 
 
+---
 
+## 👾 Demo Video
+
+Here is a short demonstration of the CampusCare app in action:
+
+[![Watch the video](https://img.youtube.com/vi/TMW2U3cn1k4/maxresdefault.jpg)](https://youtu.be/TMW2U3cn1k4)
+
+*(Note: Click the image above to watch the demo on YouTube)*
 
 ---
 
