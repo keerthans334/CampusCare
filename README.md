@@ -53,7 +53,7 @@ CampusCare is a smart Android application designed to streamline campus facility
 
 Here is a short demonstration of the CampusCare app in action:
 
-[![Watch the video](https://img.youtube.com/vi/TMW2U3cn1k4/logo.png)](https://youtu.be/TMW2U3cn1k4)
+[![Watch the video](https://img.youtube.com/vi/TMW2U3cn1k4/maxresdefault.jpg)](https://youtu.be/TMW2U3cn1k4)
 
 *(Note: Click the image above to watch the demo on YouTube)*
 
