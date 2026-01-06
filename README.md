@@ -42,11 +42,12 @@ CampusCare is a smart Android application designed to streamline campus facility
 
 ## 📱 Screenshots
 
-| Dashboard | Report Issue | Technician View |
-|:---:|:---:|:---:|
-| <img src="screenshots/dashboard.jpg" alt="Dashboard" height="400"> | <img src="screenshots/report.jpg" alt="Report" height="400"> | <img src="screenshots/technician.jpg" alt="Technician" height="400"> |
+| Landing page | Dashboard | Report Issue | Technician View | Claiming Item | dashboard showing repair replace |
+|:---:|:---:|:---:|:---:|:---:|:---:|
+| <img src="assests/main_page.png" alt="Landing" height="400"> | <img src="assests/dashboard.png" alt="Dashboard" height="400"> | <img src="assests/report_fill.png" alt="Report" height="400"> | <img src="assests/mark_complete.png" alt="Technician" height="400"> | <img src="assests/claiming.png" alt="Claim" height="400"> | <img src="assests/dash_repair_replace.png" alt="Technician" height="400"> |
 
-*(Note: Add actual screenshots to a `screenshots` folder in the repo)*
+
+
 
 ---
 
